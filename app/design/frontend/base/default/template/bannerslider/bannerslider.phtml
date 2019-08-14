@@ -23,9 +23,8 @@ $catData = $catCollection->getData();
 	$paginationHoverColor=$value['pagination_bg_hover_color'];
 	$autoplay=($value['auto_play']==0)?"false":"true";
 	$autoplayTimeout=($value['auto_play']==0)?0:$value['auto_play'];
-	endforeach;
+	endforeach;	
 ?>
-
 <?php if($status==1): ?>
 <div class="image-gallery-outer">
 	<div class="image-detail">
@@ -34,6 +33,9 @@ $catData = $catCollection->getData();
 			<?php //print_r($data); ?>
 			<li class="banner-slide">
 				<div class="img-box">
+                	<?php if($data['slide_url']!="") { ?>
+                    	<a href="<?php echo $data['slide_url']; ?>" title="<?php echo $data['slide_title']; ?>">
+                      <?php } ?>
 					<div class="img-box-inner">
 						<img src="<?php echo Mage::getBaseUrl('media').$data['slide_img']; ?>" alt="<?php echo $data['slide_title']; ?>"/>
 						<div class="slide-desc-box t-<?php echo $data['text_align']; ?>">
@@ -53,6 +55,9 @@ $catData = $catCollection->getData();
 							</div>
 						</div>
 				   </div>
+                   <?php if($data['slide_url']!="") { ?>
+                   	</a>
+                   	<?php } ?>
 				</div>
 			</li>
 		<?php endforeach; ?>
@@ -75,6 +80,7 @@ $('#banner-slider<?php echo $sliderId; ?>').owlSlider({
 	navText:['<','>'],
 	smartSpeed:450,
 	loop:true,
+	autoplayHoverPause:true,
 	dots:<?php echo $pagination; ?>
 });
 });

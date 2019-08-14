@@ -57,6 +57,12 @@ class Vsourz_Bannerslider_Block_Adminhtml_Image_Edit_Tabs_Form extends Mage_Admi
 			'wysiwyg' => true
 		));
 		
+		$fieldset->addField('slide_url', 'text', array(
+			'label' => Mage::helper('bannerslider')->__('Slide Url'),		
+			'name' => 'slide_url',
+			'note' => 'Enter URL like, http://www.domainname.com <p style="color:#f00;">If you are provide above URL then do not insert any URL in Slide Description.</p>',
+		));
+		
 		$fieldset->addField('text_color', 'text', array(
 			'label' => Mage::helper('bannerslider')->__('Text Color'),
 			'class' => 'color',			

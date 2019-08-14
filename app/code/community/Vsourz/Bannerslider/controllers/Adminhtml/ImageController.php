@@ -20,8 +20,8 @@ class Vsourz_Bannerslider_Adminhtml_ImageController extends Mage_Adminhtml_Contr
 			$model = Mage::getModel('bannerslider/imagedetail');
 			$id = $this->getRequest()->getParam('id');
 			foreach ($data as $key => $value){
-				if (is_array($value)){
-					$data[$key] = implode(',',$this->getRequest()->getParam($value));
+				if(is_array($value)){
+					$data[$key] = implode(',',$this->getRequest()->getParam($key));
 				}
 			}
 			if($id){
@@ -35,22 +35,25 @@ class Vsourz_Bannerslider_Adminhtml_ImageController extends Mage_Adminhtml_Contr
 					$uploader->setAllowRenameFiles(false);
 					// setAllowRenameFiles(true) -> move your file in a folder the magento way
 					$uploader->setFilesDispersion(false);
-					$path = Mage::getBaseDir('media') . DS .'bannerslider';
+					$path = Mage::getBaseDir('media').'/bannerslider/';
 					$imgName = explode('.',$_FILES['slide_img']['name']);
 					$imgName[0] = $imgName[0].'-'.'gallery-img'.'-'.date('Y-m-d H-i-s');
 					$imgName = implode('.',$imgName);
 					$imgName = preg_replace('/\s+/', '-', $imgName);
 					$uploader->save($path, $imgName);
-					$data['slide_img'] = 'bannerslider'.DS.$imgName;
+					$data['slide_img'] = 'bannerslider/'.$imgName;
 				}catch(Exception $e){
 					
 				}
 			}
 			else{       
-				if(isset($data['slide_img']['delete']) && $data['slide_img']['delete'] == 1){
+				if(isset($data['slide_img']) && $data['slide_img']['delete'] == 1){
 					// delete image file
-					$image = explode(',',$data['slide_img']);
-					unlink(Mage::getBaseDir('media').DS.$image[1]);
+					 $image = explode(',',$data['slide_img']);
+					 $img = Mage::getBaseDir(Mage_Core_Model_Store::URL_TYPE_MEDIA).'/'.$image[1];
+					 if(file_exists($img)){
+					  unlink($img);
+					 }
 					// set db blank entry
 					$data['slide_img'] = ''; 
 				}else{
@@ -119,7 +122,7 @@ class Vsourz_Bannerslider_Adminhtml_ImageController extends Mage_Adminhtml_Contr
 				$id = $this->getRequest()->getParam('id');
 				$objModel = $model->load($id);
 				$path = Mage::getBaseDir('media');
-				unlink($path.DS.$objModel->galleryImg);
+				unlink($path.'/'.$objModel->galleryImg);
 				$model->setId($id)->delete();
 				Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Item was successfully deleted'));
 				$this->_redirect('*/*/');
@@ -141,7 +144,7 @@ class Vsourz_Bannerslider_Adminhtml_ImageController extends Mage_Adminhtml_Contr
 				foreach($ids as $id){
 					$objModel = $imageModel->load($id);
 					$path = Mage::getBaseDir('media');
-					unlink($path.DS.$objModel->galleryImg);
+					unlink($path.'/'.$objModel->galleryImg);
 					$objModel->delete();
 				}
 				Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('bannerslider')->__('Total of %d record(s) were deleted.', count($ids)));

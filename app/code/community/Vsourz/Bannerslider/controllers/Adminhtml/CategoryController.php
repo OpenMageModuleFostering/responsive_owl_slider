@@ -122,7 +122,7 @@ class Vsourz_Bannerslider_Adminhtml_CategoryController extends Mage_Adminhtml_Co
 				$id = $this->getRequest()->getParam('id');
 				$objModel = $model->load($id);
 				$path = Mage::getBaseDir('media');
-				unlink($path.DS.$objModel->categoryImg);
+				unlink($path.'/'.$objModel->categoryImg);
 				$objModel->setId($id)->delete();
 				Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Item was successfully deleted'));
 				$this->_redirect('*/*/');
@@ -145,7 +145,7 @@ class Vsourz_Bannerslider_Adminhtml_CategoryController extends Mage_Adminhtml_Co
 				foreach($ids as $id){
 					$objModel = $imageModel->load($id);
 					$path = Mage::getBaseDir('media');
-					unlink($path.DS.$objModel->categoryImg);
+					unlink($path.'/'.$objModel->categoryImg);
 					$objModel->delete();
 				}
 				Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('bannerslider')->__('Total of %d record(s) were deleted.', count($ids)));
